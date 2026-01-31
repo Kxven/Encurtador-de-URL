@@ -11,24 +11,25 @@ import jakarta.annotation.PostConstruct;
 import java.time.Duration;
 
 @Configuration
-public class MongoConfig{
+public class MongoConfig {
 
     private final MongoTemplate mongoTemplate;
 
-    public MongoConfig( MongoTemplate mongoTemplate ){
+    public MongoConfig(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
 
     @PostConstruct
-    public void createTTLIndex(){
+    public void createTTLIndex() {
         IndexOperations ops = mongoTemplate.indexOps("urls");
 
         Index index = new Index()
-                .on("expiresAt",Sort.Direction.ASC)
-                .expire(Duration.ZERO);
+                .on("expiresAt", Sort.Direction.ASC)
+                .expire(Duration.ofMinutes(1)); // 1 minuto
 
-        ops.createIndex(index);
+        ops.ensureIndex(index);
     }
 }
+
 
 

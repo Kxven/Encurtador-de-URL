@@ -6,6 +6,7 @@ import com.encurtador.urlshortener.controller.DTO.ShortenUrlRequest;
 import com.encurtador.urlshortener.controller.DTO.ShortenUrlResponse;
 import com.encurtador.urlshortener.entities.UrlEntity;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +17,7 @@ import java.util.Date;
 
 @RestController
 public class UrlController{
-
+    @Autowired
     private final UrlRepository urlRepository;
 
     public UrlController( UrlRepository repository ){
@@ -29,11 +30,7 @@ public class UrlController{
 
         String id;
         do {
-             id = NanoIdUtils.randomNanoId(
-                    new SecureRandom(),
-                    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".toCharArray(),
-                    5 + new SecureRandom().nextInt((10 - 5) + 1)
-            );
+            id = NanoIdUtils.randomNanoId();
         }while(urlRepository.existsById(id));
 
         urlRepository.save(

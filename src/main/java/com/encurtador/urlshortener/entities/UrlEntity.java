@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
-@Document(collation = "urls")
+@Document(collection = "urls")
 public class UrlEntity{
 
     @Id
